@@ -14,4 +14,13 @@ RUN npm install
 # Build Vite assets
 RUN npm run build
 
+# Install required packages
+RUN apk add --no-cache autoconf g++ make libmemcached-dev
+
+# Install the `memcached` PHP extension with SASL auth enabled
+RUN pecl install --configureoptions 'enable-memcached-sasl="yes"' memcached
+
+# Enable the `memcached` PHP extension
+RUN docker-php-ext-enable memcached
+
 CMD ["/start.sh"]
